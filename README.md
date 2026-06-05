@@ -1,9 +1,13 @@
-# dev-process skills
+# vibe-engineering
 
 Claude Code 등 AI 코딩 에이전트를 위한 **개발 프로세스 스킬 모음**입니다.
 아이디어를 명확히 하고(`clarify`) → 요구사항을 정의하고(`prd`) → 구현하고(`implement`)
 → 검증하고(`verify`) → PR로 정리하고(`pr`) → 배운 것을 남기는(`learn`)
 end-to-end 워크플로우를 다룹니다.
+
+> **바이브 엔지니어링(Vibe Engineering)** 온라인 강의 자료의 일부로 사용됩니다.
+> 강의에서 다루는 AI 페어 개발 워크플로우를 실제 스킬로 옮겨, 수강생이
+> `npx skills add yansfil/vibe-engineering`으로 바로 설치해 실습할 수 있도록 만든 것입니다.
 
 [skills.sh](https://www.skills.sh/) / [Vercel `skills` CLI](https://github.com/vercel-labs/skills)로 설치할 수 있습니다.
 
