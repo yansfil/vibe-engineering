@@ -10,14 +10,14 @@ end-to-end 워크플로우를 다룹니다.
 ## 설치
 
 ```bash
-npx skills add yansfil/skills
+npx skills add yansfil/vibe-engineering
 ```
 
 특정 스킬만 설치하려면:
 
 ```bash
-npx skills add yansfil/skills/clarify
-npx skills add yansfil/skills/prd
+npx skills add yansfil/vibe-engineering/clarify
+npx skills add yansfil/vibe-engineering/prd
 ```
 
 Claude Code, Cursor, Copilot, Gemini, Cline, Zed 등 20여 종의 에이전트를 지원합니다.
