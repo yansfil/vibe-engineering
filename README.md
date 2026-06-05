@@ -14,7 +14,7 @@ end-to-end 워크플로우를 다룹니다.
 ## 설치
 
 ```bash
-npx skills add yansfil/vibe-engineering
+npx skills add yansfil/vibe-engineering -a claude-code -y
 ```
 
 특정 스킬만 설치하려면:
