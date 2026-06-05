@@ -12,6 +12,7 @@ allowed-tools:
   - Grep
   - Glob
   - Edit
+  - Task
   - AskUserQuestion
 ---
 
@@ -86,6 +87,53 @@ Examples:
 
 Use `chromux` for browser QA when it is available and appropriate.
 
+### Level 4. Adversarial Subagent Review
+
+Use when the same context that produced the change cannot be trusted to judge
+it, because the change is large or the risk of a confident-but-wrong "Pass" is
+high. The goal is to defeat self-verification bias: a fresh agent that did not
+write the change, and does not share its assumptions, is harder to fool.
+
+Trigger Level 4 only when at least one is true:
+
+- the diff is large or spans many files (rough rule: 5+ files or 200+ changed
+  lines)
+- the change touches security, auth, money, data migration, or destructive
+  operations
+- Level 1-3 passed but the result still feels fragile, or a single judgment
+  would carry a lot of weight
+- the user explicitly asks for a deep, independent, or adversarial review
+
+Do not trigger Level 4 for small, low-risk changes (a one-line fix, a copy
+tweak, a lint cleanup). A council of skeptics on a trivial diff is waste.
+
+How to run it:
+
+1. Frame each thing you are about to call "Pass" as an explicit claim, e.g.
+   "the new auth guard rejects expired tokens" or "the migration is reversible".
+2. For each high-stakes claim, spawn independent skeptic subagents with the
+   `Task` tool. Give each one the claim, the relevant files/diff, and the
+   evidence you already collected, then instruct it to **try to refute the
+   claim**, not to confirm it. Run skeptics for separate claims in parallel
+   (multiple `Task` calls in one message).
+3. Each skeptic returns: `refuted` or `not_refuted`, plus a concrete reason. A
+   refutation only counts if it names a specific failing case, file, line, or
+   reproduction. "Might be risky" with no concrete case does not count as a
+   refutation.
+4. Decide by majority. For a claim, run an odd number of skeptics (1, 3) and
+   take a claim as holding only if a majority returns `not_refuted` with no
+   concrete counterexample surfaced. Any concrete, reproducible refutation flips
+   that claim to Fail regardless of vote count.
+
+Subagents inherit the Evidence Rules below. Tell each skeptic that it may only
+report a refutation it actually demonstrated (ran the case, read the line),
+never one it imagined. A subagent's unverified claim is not evidence, the same
+way yours is not.
+
+Guard against endless skepticism: instruct skeptics that absent a concrete
+counterexample the default verdict is `not_refuted`. The job is to find a real
+break, not to withhold approval on vague doubt.
+
 ## Workflow
 
 1. Run `git status --short` and identify the changed files.
@@ -97,8 +145,10 @@ Use `chromux` for browser QA when it is available and appropriate.
 7. If a check fails, decide whether it is caused by this change, pre-existing,
    or unrelated.
 8. If UI/runtime changed, inspect the real route or runtime target.
-9. Report only evidence you actually collected.
-10. Say what remains unchecked.
+9. If the change is large or high-stakes (see Level 4 triggers), spawn
+   adversarial skeptic subagents on the key claims before settling the verdict.
+10. Report only evidence you actually collected.
+11. Say what remains unchecked.
 
 ## Evidence Rules
 
@@ -141,6 +191,14 @@ Pass | Partial | Fail | Blocked
 - Result:
 - Runtime:
 - Result:
+
+## Adversarial Review
+
+(Include only when Level 4 ran. Omit otherwise.)
+
+- Claim:
+- Skeptics: N run, M refuted
+- Outcome: held | broken (with the concrete counterexample)
 
 ## Failed Or Blocked
 
