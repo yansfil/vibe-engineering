@@ -27,9 +27,14 @@ local convention or the user asks for a different location.
 
 Default files:
 
-- `.dev/<topic-slug>/prd.md`
-- `.dev/<topic-slug>/checklist.md`
-- `.dev/<topic-slug>/context-notes.md`
+- `.dev/<topic-slug>/prd.md` - the contract: problem, scope, requirements,
+  acceptance criteria, tasks, and verification.
+- `.dev/<topic-slug>/checklist.md` - a checkable task list derived from the
+  PRD's tasks, for `implement` to adopt as its live checklist (see Checklist
+  Shape).
+- `.dev/<topic-slug>/context-notes.md` - grounding notes from the codebase
+  exploration (key files, conventions, constraints) so `implement` does not
+  re-discover them.
 
 If the topic slug is unclear, choose a short kebab-case slug from the feature
 name and state it before writing files.
@@ -60,6 +65,9 @@ If major ambiguity remains, ask one blocking question or recommend running
 7. Derive tasks from the requirements. Do not invent hidden scope in tasks.
 8. Define agent verification and human verification separately.
 9. End with an implementation result report contract.
+10. Write `checklist.md` from the tasks (see Checklist Shape) and
+    `context-notes.md` from what the codebase exploration surfaced, so the
+    handoff to `implement` is complete.
 
 ## Required PRD Shape
 
@@ -93,6 +101,30 @@ If major ambiguity remains, ask one blocking question or recommend running
 ## Risks And Open Decisions
 
 ## Implementation Result Report Contract
+```
+
+## Checklist Shape
+
+`checklist.md` is the actionable form of the PRD's tasks - the list `implement`
+checks off as it builds. Keep it in sync with the `Tasks` and `Acceptance
+Criteria` sections; do not add scope here that the PRD does not state.
+
+```md
+# Checklist: <feature>
+
+## Tasks
+
+- [ ] <task 1> (req: R1)
+- [ ] <task 2> (req: R2)
+
+## Acceptance Criteria
+
+- [ ] <criterion 1>
+- [ ] <criterion 2>
+
+## Human Checks
+
+- [ ] <thing a person must confirm>
 ```
 
 ## Rules

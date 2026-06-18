@@ -99,17 +99,20 @@ build is done, spawn a fresh verifier that did not write the code and let it
 judge against the acceptance criteria.
 
 1. Spawn one independent verifier subagent with the `Task` tool. Give it:
-   - the acceptance criteria from `prd.md` (or the task) as its rubric,
+   - the acceptance criteria from `prd.md` (or the task) as the rubric, with the
+     PRD's `Verification - Agent` section as the method for checking them,
    - the changed scope (`git status --short` / the diff) and relevant files,
    - the evidence you collected while building.
    Instruct it to follow the `verify` skill: judge each acceptance criterion with
-   the right verification level, report evidence, and return a per-criterion
-   verdict. The verifier is **report-only - it does not modify code**.
-2. Read the verdict.
-   - All criteria Pass -> done.
-   - Any Fail -> fix the concrete gap (file, line, failing case) the verifier
-     named, then run the verifier once more to confirm. Stop after that second
-     pass; if it still fails, report the remaining gap rather than looping.
+   the right verification level and report in the `verify` output format - an
+   overall verdict plus which criteria were checked, which failed, and the
+   evidence. The verifier is **report-only - it does not modify code**.
+2. Read the verdict. `verify` returns `Pass | Partial | Fail | Blocked` plus the
+   checked/failed detail.
+   - Pass (all criteria met) -> done.
+   - Partial or Fail -> fix the concrete gap (file, line, failing case) the
+     verifier named, then run the verifier once more to confirm. Stop after that
+     second pass; if it still fails, report the remaining gap rather than looping.
    - Blocked -> stop and report the blocker that needs a human or a decision.
 
 Do not claim completion on a verdict you produced yourself, on skipped
