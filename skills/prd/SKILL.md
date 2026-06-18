@@ -48,7 +48,9 @@ If major ambiguity remains, ask one blocking question or recommend running
 
 ## Workflow
 
-1. Read relevant local project guidance before writing.
+1. Explore the codebase as needed before writing - read relevant project
+   guidance, code, and config so the PRD is grounded in how the project actually
+   works.
 2. Define the problem, goal, users, and current scope.
 3. Separate scope from non-goals.
 4. Note expected technical structure changes at a high level.

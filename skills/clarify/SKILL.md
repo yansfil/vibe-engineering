@@ -23,7 +23,9 @@ the user explicitly asks for notes to be saved.
 ## Workflow
 
 1. Restate the current goal in 2-4 bullets.
-2. Inspect local docs or files if they can answer the question.
+2. Explore the codebase freely as the conversation requires - read any docs,
+   code, or config that could answer the question, and follow leads instead of
+   asking the user what the repo can answer.
 3. Identify the 2-4 decisions that would most change the implementation.
 4. Ask one question at a time.
 5. For each question, include why it matters and a recommended default.
