@@ -85,7 +85,9 @@ Use three levels when relevant:
 - Level 3: real runtime QA with browser, API, DB, logs, screenshots, DOM, or
   network evidence.
 
-Use `chromux` for browser QA when available and appropriate.
+Use `playwright-cli` for browser QA. If it is not installed, install it first
+(see https://github.com/microsoft/playwright-cli) or fall back to the project's
+configured browser tooling.
 
 Do not claim completion when verification failed, was skipped, or used a weaker
 target than requested. Report the concrete gap.

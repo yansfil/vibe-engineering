@@ -11,7 +11,6 @@ allowed-tools:
   - Read
   - Grep
   - Glob
-  - Edit
   - Task
   - AskUserQuestion
 ---
@@ -36,9 +35,10 @@ runtime QA, or an independent completion audit.
 3. What did we actually check?
 4. What risk remains?
 
-Do not make broad product or implementation changes while using this skill. If
-verification finds a small obvious bug, fix it only when the user asked you to
-verify and finish the task end to end. If the fix changes scope, ask first.
+Do not modify code, content, or config while using this skill. `verify` is
+read-only: it reports evidence and a verdict, it does not fix what it finds. If
+verification surfaces a bug, describe it precisely (file, line, failing case) and
+hand it back to `implement` or the user to fix.
 
 ## Verification Levels
 
@@ -85,7 +85,9 @@ Examples:
 - verify database rows or counts
 - capture screenshot, DOM, log, or command evidence
 
-Use `chromux` for browser QA when it is available and appropriate.
+Use `playwright-cli` for browser QA. If it is not installed, install it first
+(see https://github.com/microsoft/playwright-cli) or fall back to the project's
+configured browser tooling.
 
 ### Level 4. Adversarial Subagent Review
 
@@ -168,7 +170,8 @@ When a check fails:
 - quote or summarize the important error line
 - say whether it appears related to the current change
 - if unrelated, name the file/command that proves it is outside scope
-- if related and fixable in scope, fix and rerun the focused check
+- if related, report it as a Fail with the failing file/line/case so `implement`
+  or the user can fix it; do not fix it here
 - if blocked, stop and report the blocker clearly
 
 Do not keep rerunning broad checks when a narrower failure already explains the
