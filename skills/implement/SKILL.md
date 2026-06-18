@@ -22,15 +22,34 @@ Use this skill to implement an approved PRD or a clearly scoped task end to end.
 
 This is the execution counterpart to `prd`.
 
-`implement` includes the verification promised by the PRD. A separate `verify`
-skill can still be used after this skill finishes when the user wants an
-independent completion check, extra QA, or a second pass over runtime behavior.
+`implement` owns the loop that drives a task to done, including fixing. It does
+not reimplement verification: it delegates judgment to `verify` as the gate of
+its loop (see Final Verification). `verify` stays the single source of truth for
+*how* to judge done, and can still be run standalone for an independent audit on
+any diff.
+
+## Inputs
+
+When the task came from `prd`, read the artifacts under `.dev/<topic-slug>/`:
+
+- `prd.md` - the contract: scope, non-goals, requirements, acceptance criteria,
+  tasks, and the verification plan. The acceptance criteria are the rubric the
+  verifier checks against.
+- `checklist.md` - the task checklist. Adopt it as the live checklist instead of
+  regenerating one.
+- `context-notes.md` - project grounding. Read it to avoid re-exploring what
+  `prd` already established.
+
+If those artifacts do not exist (the user handed a scoped task, linked spec, or
+request directly), fall back to that single source document and build the
+checklist from it.
 
 ## Readiness Check
 
 Before editing code:
 
-1. Read the PRD, task description, or linked spec.
+1. Read the inputs above (the `.dev/<slug>/` artifacts, or the single source
+   document on the fallback path).
 2. Identify scope, non-goals, requirements, acceptance criteria, and
    verification.
 3. Check `git status --short`.
@@ -40,7 +59,8 @@ Before editing code:
 
 ## Live Checklist
 
-Create a working checklist from the source document.
+Adopt `checklist.md` as the working checklist when it exists. Otherwise create
+one from the source document.
 
 Track:
 
@@ -69,28 +89,32 @@ If a new task is needed, add it only when it maps to an approved requirement or
 is pure verification/release hygiene. Ask before adding new product scope or
 materially changing the approved structure.
 
-## Verification Loop
+## Final Verification
 
-Run the verification promised by the PRD or task.
+Finish the implementation first. Then, once, delegate the completion verdict to
+an independent verifier instead of judging it yourself.
 
-This verification is part of implementation, not a separate review phase. Use it
-to decide whether each acceptance criterion has enough evidence to be marked
-complete.
+The same context that wrote the change is the worst judge of it. So when the
+build is done, spawn a fresh verifier that did not write the code and let it
+judge against the acceptance criteria.
 
-Use three levels when relevant:
+1. Spawn one independent verifier subagent with the `Task` tool. Give it:
+   - the acceptance criteria from `prd.md` (or the task) as its rubric,
+   - the changed scope (`git status --short` / the diff) and relevant files,
+   - the evidence you collected while building.
+   Instruct it to follow the `verify` skill: judge each acceptance criterion with
+   the right verification level, report evidence, and return a per-criterion
+   verdict. The verifier is **report-only - it does not modify code**.
+2. Read the verdict.
+   - All criteria Pass -> done.
+   - Any Fail -> fix the concrete gap (file, line, failing case) the verifier
+     named, then run the verifier once more to confirm. Stop after that second
+     pass; if it still fails, report the remaining gap rather than looping.
+   - Blocked -> stop and report the blocker that needs a human or a decision.
 
-- Level 1: lint, typecheck, build, unit tests, content validation, or static
-  checks.
-- Level 2: automated behavior tests for requirements.
-- Level 3: real runtime QA with browser, API, DB, logs, screenshots, DOM, or
-  network evidence.
-
-Use `playwright-cli` for browser QA. If it is not installed, install it first
-(see https://github.com/microsoft/playwright-cli) or fall back to the project's
-configured browser tooling.
-
-Do not claim completion when verification failed, was skipped, or used a weaker
-target than requested. Report the concrete gap.
+Do not claim completion on a verdict you produced yourself, on skipped
+verification, or on a weaker target than the criteria asked for. Report the
+concrete gap.
 
 ## Final Report
 

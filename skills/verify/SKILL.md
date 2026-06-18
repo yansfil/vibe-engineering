@@ -22,9 +22,16 @@ Use this skill when the work looks done but needs proof.
 The job is not to celebrate completion. The job is to decide whether the change
 can be accepted, based on evidence.
 
-Use this as a separate pass after `implement` when the implementation agent
-already ran its planned checks but the user wants additional confidence,
-runtime QA, or an independent completion audit.
+This skill is the single source of truth for *how* to judge done. It is used two
+ways:
+
+- As the completion gate of `implement`: once `implement` finishes building, it
+  spawns an independent verifier that follows this skill to judge the acceptance
+  criteria.
+- As a separate standalone pass after `implement`, when the user wants additional
+  confidence, runtime QA, or an independent completion audit on any diff.
+
+Either way the job and the rules are the same: judge from evidence, do not fix.
 
 ## What This Skill Does
 
