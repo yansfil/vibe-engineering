@@ -95,6 +95,9 @@ If major ambiguity remains, ask one blocking question or recommend running
 
 ## Rules
 
+- Write the PRD in Korean. Keep the section headings from Required PRD Shape
+  as-is, but write all prose, requirements, acceptance criteria, and tasks in
+  Korean.
 - Requirements must describe observable behavior.
 - Acceptance criteria must have a verification path.
 - Tasks must trace back to requirements or verification.
