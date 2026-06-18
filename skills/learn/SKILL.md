@@ -34,7 +34,6 @@ Do not update durable project rules without user approval.
 ## Candidate Destinations
 
 - `CLAUDE.md`: durable Claude Code project behavior.
-- `AGENTS.md`: shared agent behavior across tools.
 - `docs/` or specs: product, data, runtime, or operational contracts.
 - `.claude/skills/<name>/SKILL.md`: recurring workflow changes.
 - A checklist or task-local note: useful but not yet durable enough.
