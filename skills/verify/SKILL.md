@@ -184,6 +184,21 @@ When a check fails:
 Do not keep rerunning broad checks when a narrower failure already explains the
 problem.
 
+## Verdict Rule
+
+The verdict must reflect what was actually checked, not what looks done.
+
+- `Pass` only when **every** acceptance criterion has real evidence at the level
+  its risk demands. A criterion that depends on runtime, browser, API, or
+  database behavior is met only when that behavior was actually exercised - not
+  when the code merely looks correct.
+- If any criterion is still unchecked or could only be confirmed by reading code,
+  the verdict is at most `Partial` - or `Blocked` if a real prerequisite (e.g. an
+  authenticated session, missing credentials) stopped you from running it.
+- Never fold an unchecked criterion into a `Pass`. An item in `Not Checked` or a
+  runtime criterion you skipped caps the verdict below `Pass`. Report it openly
+  instead of rounding up.
+
 ## Output Format
 
 ```md

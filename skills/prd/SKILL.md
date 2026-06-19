@@ -76,15 +76,11 @@ If major ambiguity remains, ask one blocking question or recommend running
 
 ## Summary
 
-## Technical Structure And Changes
-
-## Pre-Work
-
 ## Problem And Goal
 
 ## Users And Use Cases
 
-## Scope
+## Pre-Work
 
 ## Non-Goals
 
@@ -92,11 +88,13 @@ If major ambiguity remains, ask one blocking question or recommend running
 
 ## Acceptance Criteria
 
-## Tasks
-
 ## Verification - Agent
 
 ## Verification - Human
+
+## Technical Structure And Changes
+
+## Tasks
 
 ## Risks And Open Decisions
 
@@ -109,18 +107,29 @@ If major ambiguity remains, ask one blocking question or recommend running
 checks off as it builds. Keep it in sync with the `Tasks` and `Acceptance
 Criteria` sections; do not add scope here that the PRD does not state.
 
+Each task carries traceability tags so `implement` can seed a structured task
+list from it:
+
+- `(req: R1)` - the requirement(s) the task implements.
+- `(ac: AC1)` - the acceptance criterion(s) the task is responsible for. Omit if
+  the task is pure setup with no AC of its own.
+- `(after: T1)` - the task(s) that must complete first, when order matters.
+  Reference tasks by their `T<n>` id. Omit for tasks with no prerequisite.
+
+Number the tasks `T1`, `T2`, ... so `after:` can reference them.
+
 ```md
 # Checklist: <feature>
 
 ## Tasks
 
-- [ ] <task 1> (req: R1)
-- [ ] <task 2> (req: R2)
+- [ ] T1 <task 1> (req: R1) (ac: AC1)
+- [ ] T2 <task 2> (req: R2) (ac: AC2) (after: T1)
 
 ## Acceptance Criteria
 
-- [ ] <criterion 1>
-- [ ] <criterion 2>
+- [ ] AC1 <criterion 1>
+- [ ] AC2 <criterion 2>
 
 ## Human Checks
 
